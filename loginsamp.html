@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClimeS Auth</title>
+
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; font-family:Poppins, sans-serif; }
+
+body{
+  background:#0b111d;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* ===================== CARD ===================== */
+.card{
+  width:900px;
+  height:500px;
+  background:rgba(0,0,0,0.55);
+  border-radius:20px;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+  box-shadow:0 0 25px rgba(0,0,0,0.6);
+  transition:0.6s ease;
+}
+
+/* When swapping panels */
+.card.swap {
+  grid-template-columns:1fr 1fr;
+}
+
+.left, .right{
+  transition:0.6s ease;
+  height:100%;
+  width:100%;
+  position:relative;
+}
+
+/* Swap positions */
+.card.swap .left{
+  transform:translateX(100%);
+}
+.card.swap .right{
+  transform:translateX(-100%);
+}
+
+/* ==================== LEFT - ANIMATION ==================== */
+.left{
+  background:#121b2d;
+  overflow:hidden;
+}
+
+/* Clouds */
+.cloud{
+  width:120px; height:45px;
+  background:white;
+  border-radius:50px;
+  position:absolute;
+  animation:floatCloud 7s ease-in-out infinite;
+}
+.cloud::before, .cloud::after{
+  content:"";
+  position:absolute;
+  width:70px; height:55px;
+  background:white;
+  border-radius:50px;
+  top:-22px;
+}
+.cloud::before{ left:5px; }
+.cloud::after{ right:5px; }
+
+.c1{ top:50px; left:50px; }
+.c2{ top:200px; left:20px; animation-duration:9s; }
+.c3{ bottom:40px; left:140px; animation-duration:8s; }
+
+@keyframes floatCloud{
+  0%{ transform:translateY(0); }
+  50%{ transform:translateY(-15px); }
+  100%{ transform:translateY(0); }
+}
+
+/* Umbrellas */
+.umbrella{
+  width:150px;
+  position:absolute;
+  animation:floatUmbrella 6s ease-in-out infinite;
+}
+
+.umbrella .top{
+  width:150px; height:80px;
+  background:linear-gradient(135deg, #4da7ff, #002c7a);
+  border-radius:150px 150px 0 0;
+}
+.umbrella .handle{
+  width:7px; height:90px;
+  background:#c7c7c7;
+  margin:auto;
+}
+.umbrella .handle::after{
+  content:"";
+  width:30px; height:30px;
+  border:5px solid #c7c7c7;
+  border-radius:50%;
+  border-top-color:transparent;
+  border-left-color:transparent;
+  position:relative;
+  left:-13px;
+}
+
+.u1{ top:130px; right:70px; }
+.u2{ bottom:90px; right:150px; animation-duration:5s; }
+
+@keyframes floatUmbrella{
+  0%{ transform:translateY(0) rotate(-2deg); }
+  50%{ transform:translateY(-18px) rotate(3deg); }
+  100%{ transform:translateY(0) rotate(-2deg); }
+}
+
+/* ======================= RIGHT PANEL / FORMS ======================= */
+
+.right{
+  padding:40px;
+  color:white;
+}
+
+h2{
+  font-size:32px;
+  margin-bottom:15px;
+  background: linear-gradient(90deg,#00c6ff,#7d2ae8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* Tabs */
+.tabs{
+  display:flex;
+  gap:25px;
+  margin-bottom:20px;
+}
+.tabs button{
+  background:none;
+  border:none;
+  color:#9bb1c9;
+  font-size:16px;
+  cursor:pointer;
+}
+.tabs .active{
+  color:white;
+  border-bottom:2px solid #0096ff;
+}
+
+/* Forms */
+form{
+  display:none;
+  flex-direction:column;
+  gap:12px;
+}
+form.active{
+  display:flex;
+}
+input{
+  padding:12px;
+  background:#0f1622;
+  border:none;
+  border-radius:8px;
+  color:white;
+}
+.btn{
+  padding:12px;
+  background:#0096ff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="cardBox">
+
+  <!-- LEFT SIDE (Animation) -->
+  <div class="left">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+
+    <div class="umbrella u1">
+      <div class="top"></div>
+      <div class="handle"></div>
+    </div>
+
+    <div class="umbrella u2">
+      <div class="top"></div>
+      <div class="handle"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE (Forms) -->
+  <div class="right">
+    <h2>ClimeS</h2>
+
+    <div class="tabs">
+      <button id="loginTab" class="active">Login</button>
+      <button id="signupTab">Signup</button>
+    </div>
+
+    <form id="loginForm" class="active">
+      <input type="text" placeholder="Username" required>
+      <input type="password" placeholder="Password" required>
+      <button class="btn">Login</button>
+    </form>
+
+    <form id="signupForm">
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Create Password" required>
+      <button class="btn">Create Account</button>
+    </form>
+
+  </div>
+
+</div>
+
+<script>
+const card = document.getElementById("cardBox");
+
+const loginTab = document.getElementById("loginTab");
+const signupTab = document.getElementById("signupTab");
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+
+/* LOGIN CLICK */
+loginTab.onclick = () => {
+  card.classList.remove("swap");
+  loginTab.classList.add("active");
+  signupTab.classList.remove("active");
+  loginForm.classList.add("active");
+  signupForm.classList.remove("active");
+};
+
+/* SIGNUP CLICK */
+signupTab.onclick = () => {
+  card.classList.add("swap");
+  signupTab.classList.add("active");
+  loginTab.classList.remove("active");
+  signupForm.classList.add("active");
+  loginForm.classList.remove("active");
+};
+</script>
+
+</body>
+</html>
