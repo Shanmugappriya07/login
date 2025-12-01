@@ -30,6 +30,13 @@ body{
   transition:0.6s ease;
 }
 
+/* more playful 3D tilt when hovered */
+.card:hover{
+  /* no movement — keep only a subtle highlight so layout doesn't shift */
+  transform: none;
+  box-shadow:0 24px 50px rgba(0,0,0,0.55), 0 5px 50px rgba(125,42,232,0.06) inset;
+}
+
 /* When swapping panels */
 .card.swap {
   grid-template-columns:1fr 1fr;
@@ -54,6 +61,25 @@ body{
 .left{
   background:#121b2d;
   overflow:hidden;
+}
+
+/* decorative gradient blob */
+.blob{
+  position:absolute;
+  width:360px; height:360px;
+  border-radius:50%;
+  right:40px; top:-80px;
+  background: radial-gradient(circle at 20% 30%, rgba(125,42,232,0.85), transparent 20%),
+              radial-gradient(circle at 80% 70%, rgba(0,198,255,0.55), transparent 25%);
+  filter: blur(30px);
+  animation:blobFloat 10s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+
+@keyframes blobFloat{
+  0%{ transform:translateY(0) scale(1); }
+  50%{ transform:translateY(-30px) scale(1.05) rotate(6deg); }
+  100%{ transform:translateY(0) scale(1); }
 }
 
 /* Clouds */
@@ -122,6 +148,14 @@ body{
   100%{ transform:translateY(0) rotate(-2deg); }
 }
 
+/* small twinkling stars */
+.star{ position:absolute; width:6px; height:6px; background:radial-gradient(circle,#fff 0%, #ffd9a3 35%, rgba(255,255,255,0) 70%); border-radius:50%; opacity:0.9;}
+.s1{ top:20px; left:160px; animation:twinkle 4s infinite ease-in-out; }
+.s2{ top:110px; left:40px; animation-duration:3.5s; }
+.s3{ bottom:50px; left:260px; animation-duration:5s; }
+
+@keyframes twinkle{ 0%{ transform:scale(0.6); opacity:0.6 } 50%{ transform:scale(1.2); opacity:1 } 100%{ transform:scale(0.6); opacity:0.6 } }
+
 /* ======================= RIGHT PANEL / FORMS ======================= */
 
 .right{
@@ -129,11 +163,38 @@ body{
   color:white;
 }
 
+/* right-side micro interactions */
+.right .btn{ position:relative; overflow:hidden; }
+.right .btn::after{ content:""; position:absolute; left:-40%; top:0; width:40%; height:100%; background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.18)); transform:skewX(-20deg); transition:0.6s; }
+.right .btn:hover::after{ left:120%; }
+
+/* corner charm - a swinging decorative object */
+
+
+/* micro shadow accompanying the charm */
+
+/* responsive adjustments - keep charm out of the way on smaller screens */
+@media (max-width:900px){
+  .card{ width:760px; height:460px; }
+  .blob{ right:10px; top:-100px; width:300px; height:300px; }
+}
+@media (max-width:700px){
+  .card{ grid-template-columns:1fr; width:360px; height:auto; padding-bottom:30px; }
+  .left{ display:block; height:220px; }
+  .right{ padding:22px; }
+  .charm{ width:36px; height:36px; border-width:2px; }
+  .charm svg{ width:18px; height:18px; }
+}
+@media (max-width:480px){
+  /* small-screen adjustments kept, charm removed */
+}
+
 h2{
   font-size:32px;
   margin-bottom:15px;
   background: linear-gradient(90deg,#00c6ff,#7d2ae8);
-  -webkit-background-clip:text;
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color:transparent;
 }
 
@@ -191,6 +252,12 @@ input{
     <div class="cloud c2"></div>
     <div class="cloud c3"></div>
 
+    <!-- decorative blob and stars -->
+    <div class="blob"></div>
+    <div class="star s1"></div>
+    <div class="star s2"></div>
+    <div class="star s3"></div>
+
     <div class="umbrella u1">
       <div class="top"></div>
       <div class="handle"></div>
@@ -225,6 +292,8 @@ input{
     </form>
 
   </div>
+
+  <!-- corner charm removed per request -->
 
 </div>
 
